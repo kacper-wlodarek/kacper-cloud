@@ -1,0 +1,36 @@
+version: 3
+parallel_plan: true
+
+projects:
+  - name: kacper-playground-project
+    dir: .
+    terraform_version: v1.5.4
+    execution_order_group: 0
+    autoplan:
+      when_modified:
+        [
+          "*.tf",
+          "./variables/*.tfvars",
+          ".terraform.lock.hcl",
+          ".terraform-version",
+        ]
+      enabled: true
+
+workflows:
+  deploy:
+    import:
+      steps:
+        - init
+        - import:
+            extra_args: ["-var-file", "variables/$WORKSPACE.tfvars"]
+    plan:
+      steps:
+        - init
+        - run: az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
+        - plan:
+            extra_args: ["-var-file", "variables/$WORKSPACE.tfvars"]
+    apply:
+      steps:
+        - init
+        - run: az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID --output none
+        - apply
