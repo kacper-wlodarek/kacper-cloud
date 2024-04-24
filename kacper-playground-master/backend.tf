@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
     container_name       = "tfstate"
-    key                  = "kacper-playground"
-    resource_group_name  = "tl-prd-aue-rg-devops"
-    storage_account_name = "tlprdaueststatealz"
+    key                  = "xyz"
+    resource_group_name  = "kacper-play"
+    storage_account_name = "kacperstorageaccount"
     use_azuread_auth     = true
     # Using Managed Identities is not supported from anything other than a VM / VM Scaleset at the moment.
     # https://github.com/hashicorp/terraform-provider-azurerm/issues/5558
